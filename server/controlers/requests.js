@@ -59,3 +59,31 @@ export const deleteRequest = async (req, res) => {
     res.status(500).json({ message: error.message })
   }
 }
+
+export const putRequest = async (req, res) => {
+  const schema = Joi.object({
+    name: Joi.string().min(3).max(200).required(),
+    author: Joi.string().min(3).max(30).required(),
+    uid: Joi.string(),
+    isComplete: Joi.boolean(),
+    date: Joi.date()
+  })
+
+  const { error } = schema.validate(req.body)
+
+  if (error) return res.status(400).json(error.details[0].message)
+
+  const updateTodo = await Todo.findById(req.params.id)
+
+  if (!updateTodo) {
+    res.status(404).json('Not Found')
+  }
+  const { name, author, isComplete, date, uid } = req.body
+  try {
+    const update = await Todo.findByIdAndUpdate(req.params.id, { name, author, isComplete, date, uid }, { new: true })
+    res.status(201).json(update)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({ message: error.message })
+  }
+}
