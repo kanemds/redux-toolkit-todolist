@@ -50,16 +50,6 @@ export const postRequest = async (req, res) => {
   }
 }
 
-export const deleteRequest = async (req, res) => {
-  try {
-    const remove = await Todo.findByIdAndDelete(req.params.id)
-    res.status(201).json(remove)
-  } catch (error) {
-    console.log(error.message)
-    res.status(500).json({ message: error.message })
-  }
-}
-
 export const putRequest = async (req, res) => {
   const schema = Joi.object({
     name: Joi.string().min(3).max(200).required(),
@@ -72,16 +62,51 @@ export const putRequest = async (req, res) => {
   const { error } = schema.validate(req.body)
 
   if (error) return res.status(400).json(error.details[0].message)
-
-  const updateTodo = await Todo.findById(req.params.id)
-
-  if (!updateTodo) {
-    res.status(404).json('Not Found')
-  }
-  const { name, author, isComplete, date, uid } = req.body
   try {
+    const updateTodo = await Todo.findById(req.params.id)
+
+    if (!updateTodo) {
+      res.status(404).send('Not Found')
+    }
+    const { name, author, isComplete, date, uid } = req.body
+
     const update = await Todo.findByIdAndUpdate(req.params.id, { name, author, isComplete, date, uid }, { new: true })
     res.status(201).json(update)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({ message: error.message })
+  }
+}
+
+export const patchRequest = async (req, res) => {
+  try {
+    const updateTodo = await Todo.findById(req.params.id)
+
+    if (!updateTodo) {
+      res.status(404).json('Not Found')
+    }
+
+    const isCompleted = await Todo.findByIdAndUpdate(req.params.id, {
+      isComplete: !updateTodo.isComplete
+    })
+    res.status(201).json(isCompleted)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({ message: error.message })
+  }
+
+}
+
+export const deleteRequest = async (req, res) => {
+  try {
+    const updateTodo = await Todo.findById(req.params.id)
+
+    if (!updateTodo) {
+      res.status(404).json('Not Found')
+    }
+
+    const remove = await Todo.findByIdAndDelete(req.params.id)
+    res.status(201).json(remove)
   } catch (error) {
     console.log(error.message)
     res.status(500).json({ message: error.message })
