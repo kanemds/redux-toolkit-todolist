@@ -2,7 +2,14 @@ import { Todo } from '../models/todo.js'
 import Joi from 'joi'
 
 export const getRequest = async (req, res) => {
-  res.send('hello world')
+  try {
+    // .find(). is filtering 
+    const all = await Todo.find().sort({ date: -1 })
+    res.status(201).json(all)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({ message: error.message })
+  }
 }
 
 export const postRequest = async (req, res) => {
