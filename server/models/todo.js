@@ -7,7 +7,12 @@ const todoSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 200
   },
-  author: String,
+  author: {
+    type: String,
+    required: true,
+    minlength: 3,
+    maxlength: 30
+  },
   uid: String,
   isComplete: Boolean,
   date: {
