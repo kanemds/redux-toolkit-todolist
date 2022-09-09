@@ -1,11 +1,11 @@
 import express from 'express'
-import { Todo } from '../models/todo.js'
-import { getRequest } from '../controlers/requests.js'
+
+import { getRequest, postRequest } from '../controlers/requests.js'
 
 const router = express.Router()
 
-router.get(
-  '/', getRequest
-)
+router.get('/', getRequest)
+
+router.post('/', postRequest)
 
 export default router
