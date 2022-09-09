@@ -49,3 +49,13 @@ export const postRequest = async (req, res) => {
     res.status(500).json({ message: error.message })
   }
 }
+
+export const deleteRequest = async (req, res) => {
+  try {
+    const remove = await Todo.findByIdAndDelete(req.params.id)
+    res.status(201).json(remove)
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({ message: error.message })
+  }
+}
