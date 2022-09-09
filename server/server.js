@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import routes from './routes/routes.js'
+import cors from 'cors'
 
 const app = express()
 dotenv.config()
@@ -21,7 +22,7 @@ mongoose.connect(URL, {
   })
   .catch(error => console.log(error.message))
 
-
+app.use(cors())
 app.use(express.json({ limit: '30mb', extended: true }))
 app.use(express.urlencoded({ limit: '30mb', extended: true }));
 app.use('/', routes)

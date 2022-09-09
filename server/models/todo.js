@@ -19,4 +19,3 @@ const todoSchema = new mongoose.Schema({
 // this is a class, need to be capital
 export const Todo = mongoose.model('Todo', todoSchema)
 
-// export default Todo
