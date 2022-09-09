@@ -15,9 +15,7 @@ export const getRequest = async (req, res) => {
 export const postRequest = async (req, res) => {
 
   const schema = Joi.object({
-    name: Joi.string().min(3).max(200).required(),
-    author: Joi.string().min(3).max(30).required(),
-    uid: Joi.string(),
+    task: Joi.string().min(3).max(200).required(),
     isComplete: Joi.boolean(),
     date: Joi.date()
   })
@@ -31,14 +29,12 @@ export const postRequest = async (req, res) => {
 
   if (error) return res.status(400).json(error.details[0].message)
 
-  const { name, author, isComplete, date, uid } = req.body
+  const { task, isComplete, date } = req.body
 
   const todo = new Todo({
-    name,
-    author,
+    task,
     isComplete,
     date,
-    uid
   })
   try {
     await todo.save()
@@ -53,8 +49,6 @@ export const postRequest = async (req, res) => {
 export const putRequest = async (req, res) => {
   const schema = Joi.object({
     name: Joi.string().min(3).max(200).required(),
-    author: Joi.string().min(3).max(30).required(),
-    uid: Joi.string(),
     isComplete: Joi.boolean(),
     date: Joi.date()
   })
@@ -68,9 +62,9 @@ export const putRequest = async (req, res) => {
     if (!updateTodo) {
       res.status(404).send('Not Found')
     }
-    const { name, author, isComplete, date, uid } = req.body
+    const { task, isComplete, date } = req.body
 
-    const update = await Todo.findByIdAndUpdate(req.params.id, { name, author, isComplete, date, uid }, { new: true })
+    const update = await Todo.findByIdAndUpdate(req.params.id, { task, isComplete, date }, { new: true })
     res.status(201).json(update)
   } catch (error) {
     console.log(error.message)

@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { Button } from '@mui/material'
+import { useDispatch } from 'react-redux'
+import { todosAdd } from '../features/todosSlice'
 
 const AddTodo = () => {
+
+  const dispatch = useDispatch()
 
   const [todo, setTodo] = useState({
     task: '',
@@ -10,6 +14,9 @@ const AddTodo = () => {
 
   const handleSubmit = e => {
     e.preventDefault()
+
+
+    dispatch(todosAdd(todo))
 
     setTodo({
       task: '',
