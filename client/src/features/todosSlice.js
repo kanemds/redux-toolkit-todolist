@@ -52,7 +52,7 @@ const todosSlice = createSlice({
       return {
         ...state,
         todos: [action.payload, ...state.todos],
-        addTodoStatus: 'Success',
+        addTodoStatus: 'success',
         addTodoError: '',
         getTodoStatus: '',
         getTodoError: '',
