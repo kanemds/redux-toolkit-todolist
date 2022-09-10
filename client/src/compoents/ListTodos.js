@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 import { Button, Card, CircularProgress } from '@mui/material'
-import { getTodos } from '../features/todosSlice'
+import { deleteTodo, getTodos } from '../features/todosSlice'
 
 
 const ListTodos = ({ setTodo }) => {
@@ -16,6 +16,11 @@ const ListTodos = ({ setTodo }) => {
     dispatch(getTodos())
   }, [dispatch])
 
+  const handleDelete = (_id) => {
+    dispatch(deleteTodo(_id))
+  }
+
+
   return (
     <div>
       <h2>Current Task: {todos && todos.length}</h2>
@@ -26,7 +31,7 @@ const ListTodos = ({ setTodo }) => {
             <h3>{todo.task}</h3>
             <p>Added:{moment(todo.date).fromNow()}</p>
             <Button variant='outlined' size='small' onClick={() => setTodo(todo)} >Update</Button>
-            <Button variant='contained' size='small' sx={{ ml: '0.7rem' }}>Delete</Button>
+            <Button variant='contained' size='small' sx={{ ml: '0.7rem' }} onClick={() => handleDelete(todo._id)}>Delete</Button>
           </Card>
         )}
       </div>
