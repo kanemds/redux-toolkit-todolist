@@ -29,6 +29,17 @@ export const todosAdd = createAsyncThunk('todos/todosAdd', async (todo, { reject
 
 })
 
+export const getTodos = createAsyncThunk('todos/getTodos', async (id = null,
+  { rejectWithValue }) => {
+  try {
+    const response = await axios.get(baseURL)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    return rejectWithValue(error.response.data)
+  }
+})
+
 
 const todosSlice = createSlice({
   name: 'todos',
@@ -69,6 +80,46 @@ const todosSlice = createSlice({
         addTodoError: action.payload,
         getTodoStatus: '',
         getTodoError: '',
+        updateTodoStatus: '',
+        updateTodoError: '',
+        deleteTodoStatus: '',
+        deleteTodoError: '',
+      }
+    },
+    [getTodos.pending]: (state, action) => {
+      return {
+        ...state,
+        addTodoStatus: '',
+        addTodoError: '',
+        getTodoStatus: 'pending',
+        getTodoError: '',
+        updateTodoStatus: '',
+        updateTodoError: '',
+        deleteTodoStatus: '',
+        deleteTodoError: '',
+      }
+    },
+    [getTodos.fulfilled]: (state, action) => {
+      return {
+        ...state,
+        todos: action.payload,
+        addTodoStatus: '',
+        addTodoError: '',
+        getTodoStatus: 'success',
+        getTodoError: '',
+        updateTodoStatus: '',
+        updateTodoError: '',
+        deleteTodoStatus: '',
+        deleteTodoError: '',
+      }
+    },
+    [getTodos.rejected]: (state, action) => {
+      return {
+        ...state,
+        addTodoStatus: '',
+        addTodoError: '',
+        getTodoStatus: 'rejected',
+        getTodoError: action.payload,
         updateTodoStatus: '',
         updateTodoError: '',
         deleteTodoStatus: '',
