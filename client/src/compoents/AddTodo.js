@@ -56,6 +56,18 @@ const AddTodo = () => {
         {todosState.addTodoStatus === 'success' ? (
           <Alert severity='success'> Task Added </Alert>
         ) : null}
+        {todosState.updateTodoStatus === 'rejected' ? (
+          <Alert severity='error'> {todosState.updateTodoError}</Alert>
+        ) : null}
+        {todosState.updateTodoStatus === 'success' ? (
+          <Alert severity='success'> Task Updated </Alert>
+        ) : null}
+        {todosState.deleteTodoStatus === 'rejected' ? (
+          <Alert severity='error'> {todosState.deleteTodoError}</Alert>
+        ) : null}
+        {todosState.deleteTodoStatus === 'success' ? (
+          <Alert severity='warning'> Task Deleted </Alert>
+        ) : null}
       </form>
     </>
   )
