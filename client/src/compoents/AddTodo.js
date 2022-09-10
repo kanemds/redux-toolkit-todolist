@@ -1,23 +1,27 @@
 import React, { useState } from 'react'
 import { Button, Alert, CircularProgress } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { todosAdd } from '../features/todosSlice'
+import { todosAdd, updateTodo } from '../features/todosSlice'
 
-const AddTodo = () => {
+const AddTodo = ({ todo, setTodo }) => {
 
   const dispatch = useDispatch()
   const todosState = useSelector((state) => state.todosState)
-  console.log(todosState)
-  const [todo, setTodo] = useState({
-    task: '',
-    isComplete: false
-  })
+
 
   const handleSubmit = e => {
     e.preventDefault()
 
+    if (todo._id) {
+      dispatch(updateTodo(todo))
+    } else {
+      const newTodo = {
+        ...todo,
+        date: new Date()
+      }
+      dispatch(todosAdd(newTodo))
+    }
 
-    dispatch(todosAdd(todo))
 
     setTodo({
       task: '',
@@ -47,7 +51,9 @@ const AddTodo = () => {
           {
             todosState.addTodoStatus === 'pending' ? (
               <CircularProgress size={24} color='secondary' />
-            ) : 'Add Task'
+            ) : todo.id ? ('Update Task') : (
+              'Add Task'
+            )
           }
         </Button>
         {todosState.addTodoStatus === 'rejected' ? (

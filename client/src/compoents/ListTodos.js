@@ -5,7 +5,7 @@ import { Button, Card, CircularProgress } from '@mui/material'
 import { getTodos } from '../features/todosSlice'
 
 
-const ListTodos = () => {
+const ListTodos = ({ setTodo }) => {
 
   const dispatch = useDispatch()
   const todosState = useSelector((state) => state.todosState)
@@ -25,7 +25,7 @@ const ListTodos = () => {
           <Card key={todo._id} variant='outlined' sx={{ p: '0.7rem', mb: '2rem' }}>
             <h3>{todo.task}</h3>
             <p>Added:{moment(todo.date).fromNow()}</p>
-            <Button variant='outlined' size='small' >Update</Button>
+            <Button variant='outlined' size='small' onClick={() => setTodo(todo)} >Update</Button>
             <Button variant='contained' size='small' sx={{ ml: '0.7rem' }}>Delete</Button>
           </Card>
         )}

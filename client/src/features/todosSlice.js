@@ -15,6 +15,7 @@ const initialState = {
   deleteTodoError: '',
 }
 
+// action creator
 export const todosAdd = createAsyncThunk('todos/todosAdd', async (todo, { rejectWithValue }) => {
   try {
     const response = await axios.post(baseURL, todo)
@@ -40,6 +41,16 @@ export const getTodos = createAsyncThunk('todos/getTodos', async (id = null,
   }
 })
 
+export const updateTodo = createAsyncThunk('todos/updateTodo', async (todo, { rejectWithValue }) => {
+  try {
+    const { _id, task, isComplete, date } = todo
+    const response = await axios.put(baseURL + _id, { task, isComplete, date })
+    return response.data
+  } catch (error) {
+    console.log(error)
+    return rejectWithValue(error.response.data)
+  }
+})
 
 const todosSlice = createSlice({
   name: 'todos',
@@ -122,6 +133,50 @@ const todosSlice = createSlice({
         getTodoError: action.payload,
         updateTodoStatus: '',
         updateTodoError: '',
+        deleteTodoStatus: '',
+        deleteTodoError: '',
+      }
+    },
+    [updateTodo.pending]: (state, action) => {
+      return {
+        ...state,
+        addTodoStatus: '',
+        addTodoError: '',
+        getTodoStatus: '',
+        getTodoError: '',
+        updateTodoStatus: 'pending',
+        updateTodoError: '',
+        deleteTodoStatus: '',
+        deleteTodoError: '',
+      }
+    },
+    [updateTodo.fulfilled]: (state, action) => {
+
+      const updatedTodo = state.todos.map((todo) => todo._id === action.payload._id ? action.payload : todo)
+
+
+      return {
+        ...state,
+        todos: updatedTodo,
+        addTodoStatus: '',
+        addTodoError: '',
+        getTodoStatus: '',
+        getTodoError: '',
+        updateTodoStatus: 'success',
+        updateTodoError: '',
+        deleteTodoStatus: '',
+        deleteTodoError: '',
+      }
+    },
+    [updateTodo.rejected]: (state, action) => {
+      return {
+        ...state,
+        addTodoStatus: '',
+        addTodoError: '',
+        getTodoStatus: '',
+        getTodoError: '',
+        updateTodoStatus: 'rejected',
+        updateTodoError: action.payload,
         deleteTodoStatus: '',
         deleteTodoError: '',
       }
