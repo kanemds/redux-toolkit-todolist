@@ -48,7 +48,7 @@ export const postRequest = async (req, res) => {
 
 export const putRequest = async (req, res) => {
   const schema = Joi.object({
-    name: Joi.string().min(3).max(200).required(),
+    task: Joi.string().min(3).max(200).required(),
     isComplete: Joi.boolean(),
     date: Joi.date()
   })
